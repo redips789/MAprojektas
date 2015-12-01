@@ -10,5 +10,12 @@ namespace MA.Limits.LimitsDomain
         
         public List<IElementaryFunction> Multiplicands { get; set; }
 
+        public List<SumRaisedToPower> SumsRaisedToPower { get; set; }
+
+        public Summand()
+        {
+            Multiplicands = new List<IElementaryFunction>();
+            SumsRaisedToPower = new List<SumRaisedToPower>();
+        }
     }
 }

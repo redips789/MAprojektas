@@ -9,9 +9,13 @@ namespace MA.Limits
     {
         public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction)
         {
-            var newNumerator = PlugTaylorSeriesInSummands(normalizedFunction.Numerator);
+            var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower).ToList();
 
-            var newDenominator = PlugTaylorSeriesInSummands(normalizedFunction.Denominator);
+            var raisedDenominator = normalizedFunction.Denominator.SelectMany(RaiseSumsToPower);
+
+            var newNumerator = PlugTaylorSeriesInSummands(raisedNumerator);
+
+            var newDenominator = PlugTaylorSeriesInSummands(raisedDenominator);
 
             var numeratorMinPolynomialWithoutO = newNumerator.First(s => s.LittleODegree == 0);
             var denominatorMinPolynomialWithoutO = newDenominator.First(s => s.LittleODegree == 0);
@@ -40,9 +44,50 @@ namespace MA.Limits
             }
 
             return new LimitResult { LimitResultType = LimitResultType.NegativeInfinity };
-            
+
         }
 
+        public static IEnumerable<Summand> RaiseSumsToPower(Summand summand)
+        {
+            var returned = new List<Summand> { summand };
+
+            summand.SumsRaisedToPower.ForEach(
+                sum => returned = DistributeIncludingElementaryFunctions(returned, RaiseSumToPower(sum)).ToList());
+
+            return returned;
+
+        }
+
+        public static IEnumerable<Summand> RaiseSumToPower(SumRaisedToPower sumRaisedToPower)
+        {
+            var raisedInnerSums = sumRaisedToPower.Sum.SelectMany(RaiseSumsToPower);
+
+            var returned = raisedInnerSums;
+
+            for (int i = 2; i <= sumRaisedToPower.Degree; i++)
+            {
+                returned = DistributeIncludingElementaryFunctions(returned, raisedInnerSums);
+            }
+
+            return returned;
+
+        }
+
+        public static IEnumerable<Summand> DistributeIncludingElementaryFunctions(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
+        {
+            var distribution =
+                factor1.SelectMany(
+                    s1 => factor2.Select(
+                        s2 =>
+                            new Summand
+                            {
+                                Coefficient = s1.Coefficient * s2.Coefficient,
+                                PolynomialDegree = s1.PolynomialDegree + s2.PolynomialDegree,
+                                Multiplicands = s1.Multiplicands.Concat(s2.Multiplicands).ToList()
+                            }));
+
+            return distribution;
+        }
 
         public static IEnumerable<Summand> PlugTaylorSeriesInSummands(IEnumerable<Summand> summands)
         {
@@ -59,7 +104,7 @@ namespace MA.Limits
                 return new List<Summand>();
             }
 
-            if (summand.Multiplicands == null || summand.Multiplicands.Count == 0)
+            if (summand.Multiplicands.Count == 0)
             {
                 return new List<Summand> { summand };
             }
