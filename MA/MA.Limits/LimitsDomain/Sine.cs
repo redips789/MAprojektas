@@ -9,17 +9,16 @@ namespace MA.Limits.LimitsDomain
         public double Aparam { get; set; }
         public double Bparam { get; set; }
 
-
         public IEnumerable<Summand> ToTaylorExpansion(int n)
         {
             return Enumerable.Range(0, n + 1)
                               .Where(i => i % 2 == 1)
-                              .Select(i =>
-                                  new Summand
+                              .SelectMany(i =>
+                                  DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, i).Select(s => new Summand
                                   {
-                                      PolynomialDegree = i,
-                                      Coefficient = (i % 4 == 1 ? 1.0 : -1.0) / MathHelper.Factorial(i),
-                                  })
+                                      PolynomialDegree = s.PolynomialDegree,
+                                      Coefficient = s.Coefficient * (i % 4 == 1 ? 1.0 : -1.0) / MathHelper.Factorial(i)
+                                  }))
                               .Concat(new[] { new Summand { LittleODegree = n, Coefficient = 1.0 } });
 
         }

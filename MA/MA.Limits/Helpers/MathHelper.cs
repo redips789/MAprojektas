@@ -23,5 +23,33 @@ namespace MA.Limits.Helpers
         {
             return Math.Abs(value1 - value2) < maxDifference;
         }
+
+        public static double FastPow(double a, int n)
+        {
+            double result = 1;
+
+            while (n > 0)
+            {
+                if ((n & 1) > 0)
+                {
+                    result *= a;
+                }
+                n >>= 1;
+                a *= a;
+            }
+
+            return result;
+        }
+
+        public static double BinomialCoefficient(int n, int k)
+        {
+            double result = 1;
+            for (var i = 1; i <= k; i++)
+            {
+                result *= n - (k - i);
+                result /= i;
+            }
+            return Math.Round(result);
+        }
     }
 }
