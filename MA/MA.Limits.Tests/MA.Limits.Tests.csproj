@@ -58,6 +58,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LimitCalculatorMKDTests.cs" />
     <Compile Include="SineTests.cs" />
     <Compile Include="LimitCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

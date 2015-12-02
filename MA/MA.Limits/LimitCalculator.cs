@@ -7,23 +7,27 @@ namespace MA.Limits
 {
     public static class LimitCalculator
     {
-        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction)
+        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, double argument)
         {
-            return CalculateLimit(normalizedFunction, 5);
+            return CalculateLimit(normalizedFunction, argument, 7);
         }
 
-        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, int maxTaylorDegree)
+        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, double argument, int maxTaylorDegree)
         {
-            var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower).ToList();
-
+            var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower);
             var raisedDenominator = normalizedFunction.Denominator.SelectMany(RaiseSumsToPower);
 
-            var newNumerator = PlugTaylorSeriesInSummands(raisedNumerator, maxTaylorDegree);
+            if (!MathHelper.AreApproximatelyEqual(argument, 0))
+            {
+                raisedNumerator = TransformArgumentToZero(raisedNumerator, argument);
+                raisedDenominator = TransformArgumentToZero(raisedDenominator, argument);
+            }
 
-            var newDenominator = PlugTaylorSeriesInSummands(raisedDenominator, maxTaylorDegree);
+            var expandedNumerator = PlugTaylorSeriesInSummands(raisedNumerator, maxTaylorDegree);
+            var expandedDenominator = PlugTaylorSeriesInSummands(raisedDenominator, maxTaylorDegree);
 
-            var numeratorMinPolynomialWithoutO = newNumerator.First(s => s.LittleODegree == 0);
-            var denominatorMinPolynomialWithoutO = newDenominator.First(s => s.LittleODegree == 0);
+            var numeratorMinPolynomialWithoutO = expandedNumerator.First(s => s.LittleODegree == 0);
+            var denominatorMinPolynomialWithoutO = expandedDenominator.First(s => s.LittleODegree == 0);
 
             if (numeratorMinPolynomialWithoutO.PolynomialDegree >= denominatorMinPolynomialWithoutO.PolynomialDegree)
             {
@@ -52,6 +56,30 @@ namespace MA.Limits
 
         }
 
+        public static IEnumerable<Summand> TransformArgumentToZero(IEnumerable<Summand> summands, double argument)
+        {
+            var summandsList = summands.ToList();
+
+            var functions = summandsList.SelectMany(s => s.Multiplicands);
+            foreach (var foo in functions)
+            {
+                foo.Bparam += foo.Aparam * argument;
+            }
+
+            var returned =
+                summandsList.SelectMany(
+                    s =>
+                        DomainHelper.RaiseLineToPowerWithBinomialExpansion(1, argument, s.PolynomialDegree)
+                            .Select(x => new Summand
+                            {
+                                PolynomialDegree = x.PolynomialDegree,
+                                Coefficient = s.Coefficient*x.Coefficient,
+                                Multiplicands = s.Multiplicands
+                            }));
+
+            return returned;
+        }
+
         public static IEnumerable<Summand> RaiseSumsToPower(Summand summand)
         {
             var returned = new List<Summand> { summand };
@@ -60,7 +88,6 @@ namespace MA.Limits
                 sum => returned = DistributeIncludingElementaryFunctions(returned, RaiseSumToPower(sum)).ToList());
 
             return returned;
-
         }
 
         public static IEnumerable<Summand> RaiseSumToPower(SumRaisedToPower sumRaisedToPower)
@@ -116,7 +143,7 @@ namespace MA.Limits
 
             var returnedList = summand.Multiplicands[0].ToTaylorExpansion(maxTaylorDegree);
 
-            for (int i = 1; i < summand.Multiplicands.Count; i++)
+            for (var i = 1; i < summand.Multiplicands.Count; i++)
             {
                 var nextExpansion = summand.Multiplicands[i].ToTaylorExpansion(maxTaylorDegree);
                 returnedList = Distribute(returnedList, nextExpansion);

@@ -11,6 +11,17 @@ namespace MA.Limits.Helpers
         // (a * x + b) ^ n
         public static IEnumerable<Summand> RaiseLineToPowerWithBinomialExpansion(double a, double b, int n)
         {
+            if (n == 0)
+            {
+                return new List<Summand>
+                {
+                    new Summand
+                    {
+                        Coefficient = 1.0
+                    }
+                };
+            }
+
             if (MathHelper.AreApproximatelyEqual(b, 0))
             {
                 return new List<Summand>

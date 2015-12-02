@@ -12,7 +12,7 @@ namespace MA.Limits.Tests
     {
 
         [TestMethod]
-        // lim (sin(x) - x) / (sin(x) * x) = 0
+        // (lim x->0) (sin(x) - x) / (sin(x) * x) = 0
         public void CalculateLimit_AndReturnsCorrectLimit_1()
         {
             var numerator = new List<Summand>
@@ -51,7 +51,7 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(0.0);
@@ -59,7 +59,7 @@ namespace MA.Limits.Tests
 
 
         [TestMethod]
-        // lim (((1 + x)^3) - ((1 + 3x)^1)) / (x + x^5) = 0
+        // (lim x->0) (((1 + x)^3) - ((1 + 3x)^1)) / (x + x^5) = 0
         public void CalculateLimit_AndReturnsCorrectLimit_2()
         {
             var numerator = new List<Summand>
@@ -119,14 +119,14 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(0.0);
         }
 
         [TestMethod]
-        // lim (x^3 * sin(x)) * (x^3 + (x^2 * sin(x))^2 )^2 = 0
+        // (lim x->0) (x^3 * sin(x)) * (x^3 + (x^2 * sin(x))^2 )^2 = 0
         public void CalculateLimit_AndReturnsCorrectLimit_3()
         {
             var numerator = new List<Summand>
@@ -199,14 +199,14 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(0.0);
         }
 
         [TestMethod]
-        // lim (2 * x / x)  = 2
+        // (lim x->0) (2 * x / x)  = 2
         public void CalculateLimit_AndReturnsCorrectLimit_4()
         {
             var numerator = new List<Summand>
@@ -233,14 +233,14 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(2.0);
         }
 
         [TestMethod]
-        // sin (x + 3) = sin(3) ~ 0.141120008059867
+        // (lim x->0) sin (x + 3) = sin(3) ~ 0.141120008059867
         public void CalculateLimit_AndReturnsCorrectLimit_5()
         {
             var numerator = new List<Summand>
@@ -273,12 +273,11 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction, 9); // o(x^9) needed to get sin(3) = 0.141+-0.005
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0, 9); // o(x^9) needed to get sin(3) = 0.141+-0.005
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             MathHelper.AreApproximatelyEqual(result.Value, 0.141, 0.005).Should().BeTrue();
         }
-
 
     }
 }
