@@ -9,13 +9,18 @@ namespace MA.Limits
     {
         public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction)
         {
+            return CalculateLimit(normalizedFunction, 5);
+        }
+
+        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, int maxTaylorDegree)
+        {
             var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower).ToList();
 
             var raisedDenominator = normalizedFunction.Denominator.SelectMany(RaiseSumsToPower);
 
-            var newNumerator = PlugTaylorSeriesInSummands(raisedNumerator);
+            var newNumerator = PlugTaylorSeriesInSummands(raisedNumerator, maxTaylorDegree);
 
-            var newDenominator = PlugTaylorSeriesInSummands(raisedDenominator);
+            var newDenominator = PlugTaylorSeriesInSummands(raisedDenominator, maxTaylorDegree);
 
             var numeratorMinPolynomialWithoutO = newNumerator.First(s => s.LittleODegree == 0);
             var denominatorMinPolynomialWithoutO = newDenominator.First(s => s.LittleODegree == 0);
@@ -89,15 +94,15 @@ namespace MA.Limits
             return distribution;
         }
 
-        public static IEnumerable<Summand> PlugTaylorSeriesInSummands(IEnumerable<Summand> summands)
+        public static IEnumerable<Summand> PlugTaylorSeriesInSummands(IEnumerable<Summand> summands, int maxTaylorDegree)
         {
-            var expanded = summands.SelectMany(ReplaceSummandWithExpansion);
+            var expanded = summands.SelectMany(s => ReplaceSummandWithExpansion(s, maxTaylorDegree));
             var simplified = Simplify(expanded);
 
             return simplified;
         }
 
-        public static IEnumerable<Summand> ReplaceSummandWithExpansion(Summand summand)
+        public static IEnumerable<Summand> ReplaceSummandWithExpansion(Summand summand, int maxTaylorDegree)
         {
             if (MathHelper.AreApproximatelyEqual(summand.Coefficient, 0))
             {
@@ -109,11 +114,11 @@ namespace MA.Limits
                 return new List<Summand> { summand };
             }
 
-            var returnedList = summand.Multiplicands[0].ToTaylorExpansion(5);
+            var returnedList = summand.Multiplicands[0].ToTaylorExpansion(maxTaylorDegree);
 
             for (int i = 1; i < summand.Multiplicands.Count; i++)
             {
-                var nextExpansion = summand.Multiplicands[i].ToTaylorExpansion(5);
+                var nextExpansion = summand.Multiplicands[i].ToTaylorExpansion(maxTaylorDegree);
                 returnedList = Distribute(returnedList, nextExpansion);
             }
 

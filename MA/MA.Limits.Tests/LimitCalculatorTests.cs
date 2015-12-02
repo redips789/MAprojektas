@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
+using MA.Limits.Helpers;
 using MA.Limits.LimitsDomain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -236,6 +238,47 @@ namespace MA.Limits.Tests
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(2.0);
         }
+
+        [TestMethod]
+        // sin (x + 3) = sin(3) ~ 0.141120008059867
+        public void CalculateLimit_AndReturnsCorrectLimit_5()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    Coefficient = 1.0,
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new Sine()
+                        {
+                            Aparam = 1.0,
+                            Bparam = 3
+                        }
+                    }
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    Coefficient = 1.0
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 9); // o(x^9) needed to get sin(3) = 0.141+-0.005
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            MathHelper.AreApproximatelyEqual(result.Value, 0.141, 0.005).Should().BeTrue();
+        }
+
 
     }
 }
