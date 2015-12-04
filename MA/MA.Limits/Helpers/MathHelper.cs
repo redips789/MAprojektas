@@ -51,5 +51,10 @@ namespace MA.Limits.Helpers
             }
             return Math.Round(result);
         }
+
+        public static bool IsInteger(double x)
+        {
+            return AreApproximatelyEqual(x, Math.Round(x));
+        }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="LimitsDomain\ElementaryFunction.cs" />
     <Compile Include="LimitsDomain\LimitResult.cs" />
     <Compile Include="LimitsDomain\NormalizedFunction.cs" />
+    <Compile Include="LimitsDomain\PowerFunction.cs" />
     <Compile Include="LimitsDomain\Sine.cs" />
     <Compile Include="LimitsDomain\Summand.cs" />
     <Compile Include="LimitsDomain\SumRaisedToPower.cs" />
