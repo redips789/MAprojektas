@@ -22,5 +22,11 @@ namespace MA.Limits.LimitsDomain
                               .Concat(new[] { new Summand { LittleODegree = n, Coefficient = 1.0 } });
 
         }
+
+
+        public IElementaryFunction Clone()
+        {
+            return new Sine {Aparam = Aparam, Bparam = Bparam};
+        }
     }
 }

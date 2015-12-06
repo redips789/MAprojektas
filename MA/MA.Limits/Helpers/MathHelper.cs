@@ -56,5 +56,24 @@ namespace MA.Limits.Helpers
         {
             return AreApproximatelyEqual(x, Math.Round(x));
         }
+
+        public static double Power(double a, int powerNumerator, int powerDenominator)
+        {
+            if (a < 0 && powerNumerator % 2 == 1 && powerDenominator % 2 == 0)
+            {
+                return Double.NaN;
+            }
+
+            var power = ((double)powerNumerator) / powerDenominator;
+
+            var result = Math.Pow(Math.Abs(a), power);
+
+            if (powerNumerator % 2 == 1 && powerDenominator % 2 == 1)
+            {
+                result *= -1;
+            }
+
+            return result;
+        }
     }
 }

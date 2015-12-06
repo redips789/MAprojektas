@@ -43,10 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ClosenessComparer.cs" />
     <Compile Include="Helpers\DomainHelper.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="LimitCalculator.cs" />
     <Compile Include="LimitsDomain\ElementaryFunction.cs" />
+    <Compile Include="LimitsDomain\LimitDoesNotExistException.cs" />
     <Compile Include="LimitsDomain\LimitResult.cs" />
     <Compile Include="LimitsDomain\NormalizedFunction.cs" />
     <Compile Include="LimitsDomain\PowerFunction.cs" />

@@ -7,5 +7,6 @@ namespace MA.Limits.LimitsDomain
         double Aparam { get; set; }
         double Bparam { get; set; }
         IEnumerable<Summand> ToTaylorExpansion(int n);
+        IElementaryFunction Clone();
     }
 }

@@ -9,35 +9,76 @@ namespace MA.Limits.LimitsDomain
     {
         public double Aparam { get; set; }
         public double Bparam { get; set; }
-        public double Power { get; set; }
+        public int PowerNumerator { get; set; }
+        public int PowerDenominator { get; set; }
 
         public IEnumerable<Summand> ToTaylorExpansion(int n)
         {
-            if (MathHelper.IsInteger(Power))
+            var power = ((double)PowerNumerator) / PowerDenominator;
+
+            if (MathHelper.IsInteger(power))
             {
-                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, (int)Math.Round(Power));
+                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, (int)Math.Round(power));
+            }
+
+            if (MathHelper.AreApproximatelyEqual(Bparam, 0))
+            {
+                var aPowered = MathHelper.Power(Aparam, PowerNumerator, PowerDenominator);
+
+                if (double.IsNaN(aPowered))
+                {
+                    throw new LimitDoesNotExistException();
+                }
+
+                return new List<Summand> { new Summand { Coefficient = Math.Pow(aPowered, power), PolynomialDegree = power } };
             }
 
 
+            var bPowered = MathHelper.Power(Bparam, PowerNumerator, PowerDenominator);
+
+            if (double.IsNaN(bPowered))
+            {
+                throw new LimitDoesNotExistException();
+            }
+
             return Enumerable.Range(0, n + 1)
-                              .SelectMany(i =>
-                                  DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam - 1, i).Select(s => new Summand
+                              .Select(i =>
+                                  //DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam - 1, i).Select(s => new Summand
+                                  //{
+                                  //    PolynomialDegree = s.PolynomialDegree,
+                                  //    //Coefficient = s.Coefficient * Enumerable.Range(0, i).Select(x => (double)x).Aggregate(1.0, (product, next) => product * (Power - next)) / MathHelper.Factorial(i)
+                                  //    Coefficient = s.Coefficient * Product(i) / MathHelper.Factorial(i)
+                                  //}))
+                                  new Summand
                                   {
-                                      PolynomialDegree = s.PolynomialDegree,
-                                      Coefficient = s.Coefficient * Enumerable.Range(0, i).Select(x => (double)x).Aggregate(1.0, (product, next) => product * (Power - next)) / MathHelper.Factorial(i)
-                                      //Coefficient = s.Coefficient * Product(i) / MathHelper.Factorial(i)
-                                  }))
+                                    PolynomialDegree = i,
+                                    Coefficient = bPowered * Product(i, power) * MathHelper.FastPow(Aparam / Bparam, i) / MathHelper.Factorial(i)
+                                  })
                               .Concat(new[] { new Summand { LittleODegree = n, Coefficient = 1.0 } });
 
         }
 
-        private double Product(int i)
+        private double Product(int i, double power)
         {
             var result = Enumerable.Range(0, i)
                 .Select(x => (double) x)
-                .Aggregate(1.0, (product, next) => product*(Power - next));
+                .Aggregate(1.0, (product, next) => product * (power - next));
 
             return result;
+        }
+
+
+
+
+        public IElementaryFunction Clone()
+        {
+            return new PowerFunction
+            {
+                Aparam = Aparam,
+                Bparam = Bparam,
+                PowerNumerator = PowerNumerator,
+                PowerDenominator = PowerDenominator
+            };
         }
     }
 }

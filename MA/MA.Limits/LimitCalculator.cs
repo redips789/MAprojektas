@@ -29,19 +29,26 @@ namespace MA.Limits
             var numeratorMinPolynomialWithoutO = expandedNumerator.First(s => s.LittleODegree == 0);
             var denominatorMinPolynomialWithoutO = expandedDenominator.First(s => s.LittleODegree == 0);
 
-            if (numeratorMinPolynomialWithoutO.PolynomialDegree >= denominatorMinPolynomialWithoutO.PolynomialDegree)
+            if (MathHelper.AreApproximatelyEqual(numeratorMinPolynomialWithoutO.PolynomialDegree,
+                denominatorMinPolynomialWithoutO.PolynomialDegree))
             {
                 return new LimitResult
                 {
                     LimitResultType = LimitResultType.RealNumber,
-                    Value =
-                        numeratorMinPolynomialWithoutO.PolynomialDegree > denominatorMinPolynomialWithoutO.PolynomialDegree
-                            ? 0
-                            : numeratorMinPolynomialWithoutO.Coefficient / denominatorMinPolynomialWithoutO.Coefficient
+                    Value = numeratorMinPolynomialWithoutO.Coefficient / denominatorMinPolynomialWithoutO.Coefficient
                 };
             }
 
-            if ((denominatorMinPolynomialWithoutO.PolynomialDegree - denominatorMinPolynomialWithoutO.PolynomialDegree)
+            if (numeratorMinPolynomialWithoutO.PolynomialDegree > denominatorMinPolynomialWithoutO.PolynomialDegree)
+            {
+                return new LimitResult
+                {
+                    LimitResultType = LimitResultType.RealNumber,
+                    Value = 0
+                };
+            }
+
+            if (((int)denominatorMinPolynomialWithoutO.PolynomialDegree - (int)denominatorMinPolynomialWithoutO.PolynomialDegree)
                 % 2 == 1)
             {
                 return new LimitResult { LimitResultType = LimitResultType.DoesNotExist };
@@ -69,7 +76,7 @@ namespace MA.Limits
             var returned =
                 summandsList.SelectMany(
                     s =>
-                        DomainHelper.RaiseLineToPowerWithBinomialExpansion(1, argument, s.PolynomialDegree)
+                        DomainHelper.RaiseLineToPowerWithBinomialExpansion(1, argument, (int)s.PolynomialDegree)
                             .Select(x => new Summand
                             {
                                 PolynomialDegree = x.PolynomialDegree,
@@ -103,7 +110,7 @@ namespace MA.Limits
 
             return returned;
 
-        }
+       } 
 
         public static IEnumerable<Summand> DistributeIncludingElementaryFunctions(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
         {
@@ -115,7 +122,7 @@ namespace MA.Limits
                             {
                                 Coefficient = s1.Coefficient * s2.Coefficient,
                                 PolynomialDegree = s1.PolynomialDegree + s2.PolynomialDegree,
-                                Multiplicands = s1.Multiplicands.Concat(s2.Multiplicands).ToList()
+                                Multiplicands = s1.Multiplicands.Concat(s2.Multiplicands).Select(s => s.Clone()).ToList()
                             }));
 
             return distribution;
@@ -181,7 +188,7 @@ namespace MA.Limits
         public static IEnumerable<Summand> Simplify(IEnumerable<Summand> series)
         {
             var grouped =
-                series.GroupBy(x => new { x.PolynomialDegree, x.LittleODegree },
+                series.GroupBy(x => new Summand(){ PolynomialDegree = x.PolynomialDegree, LittleODegree = x.LittleODegree },
                     s => s,
                     (key, group) =>
                         new Summand
@@ -189,7 +196,8 @@ namespace MA.Limits
                             PolynomialDegree = key.PolynomialDegree,
                             LittleODegree = key.LittleODegree,
                             Coefficient = group.Sum(e => e.Coefficient)
-                        });
+                        },
+                        new ClosenessComparer());
             var simplified =
                 grouped.Where(s => !MathHelper.AreApproximatelyEqual(s.Coefficient, 0));
 
