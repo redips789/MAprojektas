@@ -273,7 +273,7 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0, 9); // o(x^9) needed to get sin(3) = 0.141+-0.005
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0); // o(x^9) needed to get sin(3) = 0.141+-0.005
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             MathHelper.AreApproximatelyEqual(result.Value, 0.141, 0.005).Should().BeTrue();

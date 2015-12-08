@@ -24,6 +24,16 @@ namespace MA.Limits.Helpers
             return Math.Abs(value1 - value2) < maxDifference;
         }
 
+        public static bool IsZero(double value)
+        {
+            return AreApproximatelyEqual(value, 0);
+        }
+
+        public static bool IsZero(double value, double maxDifference)
+        {
+            return AreApproximatelyEqual(value, 0, maxDifference);
+        }
+
         public static double FastPow(double a, int n)
         {
             double result = 1;

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using FluentAssertions;
 using MA.Limits.LimitsDomain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,17 +43,20 @@ namespace MA.Limits.Tests
 
             var expansion = sine.ToTaylorExpansion(5).ToList();
 
-            // sin(2*x + 5) = 5 + 2*x - (125 + 150*x + 60*x^2 + 8*x^3)/6 + (3125 + 6250*x + 5000*x^2 + 2000*x^3 + 400*x^4 + 32*x^5)/120 + o(x^5)
-            expansion.Should().HaveCount(13);
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0.0, 1.0, 0.0, 1.0, 2.0, 3.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 0.0);
-            expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5);
+            expansion.Should().HaveCount(7);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 0.0);
+            expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 0, 0, 0, 5);
             expansion.Select(s => s.Coefficient)
                 .Should()
                 .ContainInOrder(
-                    5.0, 2.0, 
-                    -125.0/6, -150.0/6, -60.0/6, -8.0/6,
-                    3125.0 / 120, 6250.0 / 120, 5000.0 / 120, 2000.0 / 120, 400.0 / 120, 32.0 / 120, 
-                    1.0);
+                    Math.Sin(5),
+                    2 * Math.Cos(5),
+                    -2 * Math.Sin(5),
+                    -8.0 / 6 * Math.Cos(5),
+                    16.0 / 24 * Math.Sin(5),
+                    32.0 / 120 * Math.Cos(5),
+                    1.0
+                );
         }
     }
 }

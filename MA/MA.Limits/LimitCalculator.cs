@@ -17,7 +17,7 @@ namespace MA.Limits
             var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower);
             var raisedDenominator = normalizedFunction.Denominator.SelectMany(RaiseSumsToPower);
 
-            if (!MathHelper.AreApproximatelyEqual(argument, 0))
+            if (!MathHelper.IsZero(argument))
             {
                 raisedNumerator = TransformArgumentToZero(raisedNumerator, argument);
                 raisedDenominator = TransformArgumentToZero(raisedDenominator, argument);
@@ -138,7 +138,7 @@ namespace MA.Limits
 
         public static IEnumerable<Summand> ReplaceSummandWithExpansion(Summand summand, int maxTaylorDegree)
         {
-            if (MathHelper.AreApproximatelyEqual(summand.Coefficient, 0))
+            if (MathHelper.IsZero(summand.Coefficient))
             {
                 return new List<Summand>();
             }
@@ -199,7 +199,7 @@ namespace MA.Limits
                         },
                         new ClosenessComparer());
             var simplified =
-                grouped.Where(s => !MathHelper.AreApproximatelyEqual(s.Coefficient, 0));
+                grouped.Where(s => !MathHelper.IsZero(s.Coefficient));
 
             return simplified;
         }

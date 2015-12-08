@@ -21,7 +21,7 @@ namespace MA.Limits.LimitsDomain
                 return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, (int)Math.Round(power));
             }
 
-            if (MathHelper.AreApproximatelyEqual(Bparam, 0))
+            if (MathHelper.IsZero(Bparam))
             {
                 var aPowered = MathHelper.Power(Aparam, PowerNumerator, PowerDenominator);
 

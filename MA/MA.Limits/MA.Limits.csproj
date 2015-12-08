@@ -47,9 +47,12 @@
     <Compile Include="Helpers\DomainHelper.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="LimitCalculator.cs" />
+    <Compile Include="LimitsDomain\Cosine.cs" />
     <Compile Include="LimitsDomain\ElementaryFunction.cs" />
+    <Compile Include="LimitsDomain\ExponentialFunction.cs" />
     <Compile Include="LimitsDomain\LimitDoesNotExistException.cs" />
     <Compile Include="LimitsDomain\LimitResult.cs" />
+    <Compile Include="LimitsDomain\LogarithmicFunction.cs" />
     <Compile Include="LimitsDomain\NormalizedFunction.cs" />
     <Compile Include="LimitsDomain\PowerFunction.cs" />
     <Compile Include="LimitsDomain\Sine.cs" />
