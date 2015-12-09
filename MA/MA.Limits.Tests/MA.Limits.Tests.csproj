@@ -59,6 +59,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AntanoTestai.cs" />
     <Compile Include="CosineTests.cs" />
     <Compile Include="ExponentialFunctionTests.cs" />
     <Compile Include="LimitCalculatorMKDTests.cs" />
