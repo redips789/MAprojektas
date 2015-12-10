@@ -96,6 +96,7 @@ namespace MA.Limits.Tests
             {
                 new Summand
                 {
+                    Coefficient = 1,
                     SumsRaisedToPower = new List<SumRaisedToPower>
                     {
                         new SumRaisedToPower
@@ -105,6 +106,7 @@ namespace MA.Limits.Tests
                             {
                                 new Summand
                                 {
+                                    Coefficient = 1,
                                     Multiplicands = new List<IElementaryFunction>
                                     {
                                         new Sine {Aparam = 1.0, Bparam = 0}
