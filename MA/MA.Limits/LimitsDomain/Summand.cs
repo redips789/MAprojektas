@@ -8,12 +8,17 @@ namespace MA.Limits.LimitsDomain
     {
         public double Coefficient { get; set; }
 
-        private double _polynomialDegree;
-        public double PolynomialDegree
-        {
-            get { return _polynomialDegree; }
-            set { _polynomialDegree = MathHelper.IsInteger(value) ? (int) Math.Round(value) : value; }
-        }
+        public int PolynomialDegree { get; set; }
+
+
+        /// <summary>
+        /// for internal usage only!!!
+        /// </summary>
+        public int PolynomialDegreeDenominator { get; set; }
+
+        /// <summary>
+        /// for internal usage only!!!
+        /// </summary>
         public int LittleODegree { get; set; }
         
         public List<IElementaryFunction> Multiplicands { get; set; }
@@ -24,6 +29,8 @@ namespace MA.Limits.LimitsDomain
         {
             Multiplicands = new List<IElementaryFunction>();
             SumsRaisedToPower = new List<SumRaisedToPower>();
+            Coefficient = 1.0;
+            PolynomialDegreeDenominator = 1;
         }
     }
 }

@@ -344,7 +344,7 @@ namespace MA.Limits.Tests
 
 
         [TestMethod]
-        // (lim x->1) ((x - 1)^(1/2)) / ((x - 1)^(1/3) * (x + 1)^(1/3))
+        // (lim x->1) ((x - 1)^(1/2)) / ((x - 1)^(1/3) * (x + 1)^(1/3)) NOT EXISTS
         public void CalculateLimit_MKD_68_10()
         {
             var numerator = new List<Summand>
@@ -380,8 +380,7 @@ namespace MA.Limits.Tests
 
             var result = LimitCalculator.CalculateLimit(normalizedFunction, 1.0);
 
-            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
-            result.Value.Should().Be(0.0);
+            result.LimitResultType.Should().Be(LimitResultType.DoesNotExist);
         }
 
 

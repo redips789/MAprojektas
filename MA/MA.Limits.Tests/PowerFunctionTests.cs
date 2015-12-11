@@ -17,7 +17,7 @@ namespace MA.Limits.Tests
 
             expansion.Should().HaveCount(4);
 
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0.0, 1.0, 2.0, 3.0);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0, 1, 2, 3);
             expansion.Select(s => s.LittleODegree).Should().OnlyContain(x => x == 0);
             expansion.Select(s => s.Coefficient).Should().ContainInOrder(27.0, 54.0, 36.0, 8.0);
         }
@@ -30,7 +30,7 @@ namespace MA.Limits.Tests
 
             expansion.Should().HaveCount(4);
 
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0.0, 1.0, 2.0, 0.0);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0, 1, 2, 0);
             expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 2);
             expansion.Select(s => s.Coefficient).Should().ContainInOrder(Math.Pow(3, 0.5), Math.Pow(3, 0.5) * 1.0 / 3.0, Math.Pow(3, 0.5) * -1.0 / 18.0, 1.0);
         }

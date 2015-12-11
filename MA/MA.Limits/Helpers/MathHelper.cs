@@ -85,5 +85,17 @@ namespace MA.Limits.Helpers
 
             return result;
         }
+
+        public static int GreatestCommonDivisor(int a, int b)
+        {
+            while (b != 0)
+            {
+                var remainder = a % b;
+                a = b;
+                b = remainder;
+            }
+
+            return a;
+        }
     }
 }

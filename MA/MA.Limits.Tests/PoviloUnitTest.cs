@@ -67,7 +67,7 @@ namespace MA.Limits.Tests
                 new Summand
                 {
                     Coefficient = 5.0,
-                    PolynomialDegree = 1.0,
+                    PolynomialDegree = 1,
                 }
             };
 

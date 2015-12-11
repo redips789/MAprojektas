@@ -14,11 +14,13 @@ namespace MA.Limits.LimitsDomain
 
         public IEnumerable<Summand> ToTaylorExpansion(int n)
         {
-            var power = ((double)PowerNumerator) / PowerDenominator;
+            var gcd = MathHelper.GreatestCommonDivisor(PowerNumerator, PowerDenominator);
+            PowerNumerator /= gcd;
+            PowerDenominator /= gcd;
 
-            if (MathHelper.IsInteger(power))
+            if (PowerDenominator == 1)
             {
-                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, (int)Math.Round(power));
+                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, PowerNumerator);
             }
 
             if (MathHelper.IsZero(Bparam))
@@ -30,7 +32,15 @@ namespace MA.Limits.LimitsDomain
                     throw new LimitDoesNotExistException();
                 }
 
-                return new List<Summand> { new Summand { Coefficient = Math.Pow(aPowered, power), PolynomialDegree = power } };
+                return new List<Summand>
+                {
+                    new Summand
+                    {
+                        Coefficient = aPowered,
+                        PolynomialDegree = PowerNumerator,
+                        PolynomialDegreeDenominator = PowerDenominator
+                    }
+                };
             }
 
 
@@ -52,7 +62,7 @@ namespace MA.Limits.LimitsDomain
                                   new Summand
                                   {
                                     PolynomialDegree = i,
-                                    Coefficient = bPowered * Product(i, power) * MathHelper.FastPow(Aparam / Bparam, i) / MathHelper.Factorial(i)
+                                    Coefficient = bPowered * Product(i, PowerNumerator / (double)PowerDenominator) * MathHelper.FastPow(Aparam / Bparam, i) / MathHelper.Factorial(i)
                                   })
                               .Concat(new[] { new Summand { LittleODegree = n, Coefficient = 1.0 } });
 

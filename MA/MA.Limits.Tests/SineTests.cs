@@ -18,7 +18,7 @@ namespace MA.Limits.Tests
             var expansion = sine.ToTaylorExpansion(5).ToList();
 
             expansion.Should().HaveCount(4);
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(1.0, 3.0, 5.0, 0.0);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(1, 3, 5, 0);
             expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 5);
             expansion.Select(s => s.Coefficient).Should().ContainInOrder(1.0, -1.0 / 6, 1.0 / 120, 1.0);
         }
@@ -31,7 +31,7 @@ namespace MA.Limits.Tests
             var expansion = sine.ToTaylorExpansion(5).ToList();
 
             expansion.Should().HaveCount(4);
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(1.0, 3.0, 5.0, 0.0);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(1, 3, 5, 0);
             expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 5);
             expansion.Select(s => s.Coefficient).Should().ContainInOrder(2.0, -8.0 / 6, 32.0 / 120, 1.0);
         }
@@ -44,7 +44,7 @@ namespace MA.Limits.Tests
             var expansion = sine.ToTaylorExpansion(5).ToList();
 
             expansion.Should().HaveCount(7);
-            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 0.0);
+            expansion.Select(s => s.PolynomialDegree).Should().ContainInOrder(0, 1, 2, 3, 4, 5, 0);
             expansion.Select(s => s.LittleODegree).Should().ContainInOrder(0, 0, 0, 0, 0, 0, 5);
             expansion.Select(s => s.Coefficient)
                 .Should()

@@ -273,11 +273,138 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0); // o(x^9) needed to get sin(3) = 0.141+-0.005
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             MathHelper.AreApproximatelyEqual(result.Value, 0.141, 0.005).Should().BeTrue();
         }
+
+
+        [TestMethod]
+        // (lim x->0) 1/x
+        public void CalculateLimit_AndReturnsCorrectLimit_6()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand()
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 1
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.DoesNotExist);
+        }
+
+        [TestMethod]
+        // (lim x->0) 1/-(x^2)
+        public void CalculateLimit_AndReturnsCorrectLimit_7()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand()
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    Coefficient = -1,
+                    PolynomialDegree = 2
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.NegativeInfinity);
+        }
+
+        [TestMethod]
+        // (lim x->0) 1/sin(x)
+        public void CalculateLimit_AndReturnsCorrectLimit_8()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand()
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new Sine {Aparam = 1}
+                    }
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.DoesNotExist);
+        }
+
+        [TestMethod]
+        // (lim x->0) (x^(1/5)) / (x^(1/3)) = +INF
+        public void CalculateLimit_AndReturnsCorrectLimit_9()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new PowerFunction() {Aparam = 1, PowerNumerator = 1, PowerDenominator = 5}
+                    }
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new PowerFunction {Aparam = 1, PowerNumerator = 1, PowerDenominator = 3}
+                    }
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.PositiveInfinity);
+        }
+
 
     }
 }
