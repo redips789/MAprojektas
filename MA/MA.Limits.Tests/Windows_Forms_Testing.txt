@@ -1,0 +1,33 @@
+﻿Klase-AntanoTestai
+1.) (lim x->0) sin(4x) / x = 4                                                  Pavyko
+2.) (lim x->1) 3x-x^0.5 = 2                                                     Pavyko
+3.) (lim x->0) cos(3x) - cos(7x) / x^2 = 20                                     Pavyko
+4.) (lim x->10) ln(x) - ln(10) / x-10 = 1/10                                    Pavyko
+5.) (lim x->5) ln(x) - ln(5) / x-5 = 1/5                                        Pavyko
+6.) (lim x->0) x / 2^x = 0                                                      Pavyko
+8.) (lim x->0) sinx-x / x*sinx = 0                                              Pavyko
+9.) (lim x->-1)(x^2+6x+5) / (x^2-1) = -2                                        Pavyko
+10.) (lim x->0)(x) / ((4-x)^1/2)-2 = -4                                         Pavyko
+11.) (lim x->0) sin(7PI) / sin(2PI) = -3.5                                      Netestuota
+12.) (lim x->10) sin(x) - sin(10) / x-10 = cos(10)                              Netestuota
+13.) (lim x->0) cos(x) - 1 / x^2 = -1/2                                         Pavyko
+14.) (lim x->PI/2) 1-sinx / cosx^2 = 1/2                                        Pavyko
+
+Klase-LimitCalculatorMKDTests
+1.) (lim x->1) (5*x^2 - 4*x - 1) / (x - 1) = 6                                  Pavyko
+2.) (lim x->2) 1 / x  = 0.5                                                     Pavyko
+3.) (lim x->4) x^0.5 = 2                                                        Pavyko
+4.) (lim x->1) sin(x - 1) = 0                                                   Pavyko
+5.) (lim x->-1/3) (9*x^2 - 1) / (x + 1/3) = -6                                  Pavyko
+6.) (lim x->-2/Pi) 1 - cos(Pi*x + 2) = 0                                        Pavyko
+7.) (lim x->-Pi) cos(0.5*x) = 0                                                 Pavyko
+8.) (lim x->-2) ((x - 6)^(1/3) + 2) / (x + 2) = 1/12                            Pavyko
+9.) (lim x->1) ((x - 1)^(1/2)) / ((x - 1)^(1/3) * (x + 1)^(1/3)) NOT EXISTS     Pavyko
+10.) (lim x->0) sin(x)/ln(1 + 2x) = 1/2                                         Pavyko
+11.) (lim x->0) (cos(x) * (e^(7x) - e^(2x))) / sin(x) = 5                       Pavyko
+12.) (lim x->1) sin(7Pi*x)/sin(2Pi*x) = -7/2                                    Netestuota
+
+
+Pastaba:
+Tokios reiksmes, kaip: 1/3, 1/12, pi, pi/2, 2/pi buvo isistatomos kaip realus skaiciai su 16 simboliu po kableliu
+Pvz 1/3 = 0.3333333333333333
