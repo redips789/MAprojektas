@@ -174,5 +174,95 @@ namespace MA.Limits.Tests
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(3.0);
         }
+
+
+        [TestMethod]
+        public void CalculateLimit_MKD_67_1_StringParse()
+        {
+            string numeratorString = "((5*x^2)-4*x-1)";
+            string denominatorString = "(x-1)";
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = StringToSummand.Parse(numeratorString),
+                Denominator = StringToSummand.Parse(denominatorString)
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 1);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(6.0);
+        }
+
+        [TestMethod]
+        public void CalculateLimit_MKD_69_33_StringParse()
+        {
+            string numeratorString = "(cos(x)*(e^(7x)-e^(2x)))";
+            string denominatorString = "sin(x)";
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = StringToSummand.Parse(numeratorString),
+                Denominator = StringToSummand.Parse(denominatorString)
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0.0);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(5);
+        }
+
+        [TestMethod]
+        public void CalculateLimit_MKD_69_30_StringParse()
+        {
+            string numeratorString = "sin(x)";
+            string denominatorString = "ln(1+2*x)";
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = StringToSummand.Parse(numeratorString),
+                Denominator = StringToSummand.Parse(denominatorString),
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0.0);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(0.5);
+        }
+
+        [TestMethod]
+        public void CalculateLimit_AndReturnsCorrectLimit_9_StringParse()
+        {
+            string numeratorString = "x^(1/5)";
+            string denominatorString = "x^(1/3)";
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = StringToSummand.Parse(numeratorString),
+                Denominator = StringToSummand.Parse(denominatorString),
+            };
+
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.PositiveInfinity);
+        }
+
+        [TestMethod]
+        public void CalculateLimit_MKD_67_16_StringParse()
+        {
+            string numeratorString = "1-cos(Pi*x+2)";
+            string denominatorString = "1";
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = StringToSummand.Parse(numeratorString),
+                Denominator = StringToSummand.Parse(denominatorString),
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, -2 / Math.PI);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(0);
+        }
     }
 }
