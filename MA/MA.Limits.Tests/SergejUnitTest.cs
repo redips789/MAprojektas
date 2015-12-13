@@ -182,6 +182,8 @@ namespace MA.Limits.Tests
             string numeratorString = "((5*x^2)-4*x-1)";
             string denominatorString = "(x-1)";
 
+       //     var a = StringToSummand.FindPolynomialDegree("(5*x^2)");
+
             var normalizedFunction = new NormalizedFunction
             {
                 Numerator = StringToSummand.Parse(numeratorString),

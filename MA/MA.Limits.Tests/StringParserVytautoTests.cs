@@ -98,7 +98,11 @@ namespace MA.Limits.Tests
         [TestMethod]
         public void Parse_5()
         {
-            string str = "(x+4)^(2/3)";
+            string str = "((x+4)^(2/3))";
+
+          //  var a = StringToSummand.FindElementaryFunction("(x+4)^(2/3)");
+            //var a = StringToSummand.FindElementaryFunction("5x^(2/3)");
+            //var a = StringToSummand.FindElementaryFunction("(x+2)^2");
 
             var result = StringToSummand.Parse(str);
 
@@ -122,6 +126,8 @@ namespace MA.Limits.Tests
         public void Parse_6()
         {
             string str = "x^(2/3)";
+
+            var a = StringToSummand.FindPolynomialDegree("x^(2/3)");
 
             var result = StringToSummand.Parse(str);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MA.Limits.LimitsDomain;
+using System.Globalization;
 
 namespace MA.Limits
 {
@@ -205,7 +206,7 @@ namespace MA.Limits
             string toParse = Reverse(sb.ToString());
             if (toParse.Count() > 0)
             {
-                a = double.Parse(toParse);
+                a = double.Parse(toParse,CultureInfo.InvariantCulture);
             }
 
             if (xpos == 0 || (xpos == 1 && negative == true && str[0] == '-'))
@@ -250,7 +251,7 @@ namespace MA.Limits
             string s = sb.ToString();
             if (s.Count() > 0)
             {
-                b = double.Parse(sb.ToString());
+                b = double.Parse(sb.ToString(), CultureInfo.InvariantCulture);
             }
 
 
@@ -285,7 +286,6 @@ namespace MA.Limits
         public static IElementaryFunction ConvertToElementaryFunction(string str)
         {
             IElementaryFunction function = null;
-            string rez = str.Substring(0, 2);
             double[] arr = null;
 
 
@@ -379,7 +379,7 @@ namespace MA.Limits
 
         }
 
-        private static LinkedList<String> FindElementaryFunction(string str)
+        public static LinkedList<String> FindElementaryFunction(string str)
         {
             int openned = 0;
             LinkedList<string> funcList = new LinkedList<string>();
@@ -393,10 +393,7 @@ namespace MA.Limits
                 if ((i + 2) < (str.Count() - 1) && openned == 0 && ((str[i] == 's' && str[i + 1] == 'i' && str[i + 2] == 'n')
                                 || (str[i] == 'c' && str[i + 1] == 'o' && str[i + 2] == 's')
                                 || (str[i] == 'l' && str[i + 1] == 'n')
-                                || (str[i] == 'e' && str[i + 1] == '^')
-                                || (str[i] == ')' && str[i + 1] == '^' && str[i + 2] == '(')
-                                || (str[i] == 'x' && str[i + 1] == '^' && str[i + 2] == '(')
-                                || (str[i] == ')' && str[i + 1] == '^')))
+                                || (str[i] == 'e' && str[i + 1] == '^')))
                 {
 
                     int lenght = 0;
@@ -412,13 +409,133 @@ namespace MA.Limits
 
                     funcList.AddLast(str.Substring(i, lenght));
                 }
+
+                else if ((i + 1) < (str.Count() - 1) && openned == 0)
+                {
+                    int startPosition=0;
+                    int lenght = 0;
+
+                    if (str[i] == ')' && str[i + 1] == '^' && str[i + 2] == '(')
+                    {
+                        lenght = 0;
+                        for (int j = i - 1; j >= 0; j--)
+                        {
+                            lenght++;
+                            if (str[j] == '(')
+                            {
+                                break;
+                            }
+
+                        }
+
+                        startPosition = i - lenght;
+
+                        for (i = i + 3; i < str.Count(); i++)
+                        {
+                            if (isInteger(str[i]) == true || str[i] == ')' || str[i] == '/')
+                            {
+                                lenght++;
+                            }
+                            else break;
+                        }
+
+                        lenght += 3;
+                        funcList.AddLast(str.Substring(startPosition, lenght));
+                    }
+                    else if (str[i] == 'x' && str[i + 1] == '^' && str[i + 2] == '(')
+                    {
+                        lenght = 0;
+                        for (int j = i - 1; j >= 0; j--)
+                        {
+
+                            if (isInteger(str[j]) == true || str[j] == '*')
+                            {
+                                lenght++;
+                            }
+                            else break;
+
+                        }
+
+                        startPosition = i - lenght;
+
+                        for (i = i + 3; i < str.Count(); i++)
+                        {
+                            if (isInteger(str[i]) == true || str[i] == ')' ||str[i]=='/')
+                            {
+                                lenght++;
+                            }
+                            else break;
+                        }
+
+                        lenght += 3;
+                        funcList.AddLast(str.Substring(startPosition, lenght));
+                    }
+                    else if (str[i] == ')' && str[i + 1] == '^' && isInteger(str[i + 2]) == true)
+                    {
+                        lenght = 0;
+                        for (int j = i - 1; j >= 0; j--)
+                        {
+                            lenght++;
+                            if (str[j] == '(')
+                            {
+                                break;
+                            }
+
+                        }
+
+                        startPosition = i - lenght;
+
+                        for (i = i + 2; i < str.Count(); i++)
+                        {
+                            if (isInteger(str[i]) == true)
+                            {
+                                lenght++;
+                            }
+                            else break;
+                        }
+
+                        lenght += 2;
+                        funcList.AddLast(str.Substring(startPosition, lenght));
+                    }
+
+                    
+                }
+
+
             }
 
             return funcList;
 
         }
 
-        private static int FindPolynomialDegree(string str)
+        private static bool check(string str, int index)
+        {
+            switch(str[index])
+            {
+                case 'x':
+                    for (int i = 0; i < str.Count()-2; i++)
+                    {
+                        if ((str[i] == ')' && str[i + 1] == '^') || (str[i]=='x' && str[i+1]=='^' && str[i+2]=='('))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+
+                case '^':
+                    if (str[index + 1] == '(' && str[index - 1] == ')' || (str[index+1]=='(' && str[index-1]=='x'))
+                        return true;
+                    else return false;
+                default:
+                    return false;
+            }
+
+
+        }
+
+
+        public static int FindPolynomialDegree(string str)
         {
             int degree = 1;
             int a = 0;
@@ -427,7 +544,31 @@ namespace MA.Limits
 
             if (str[0] == '(' && str[str.Count() - 1] == ')')
             {
-                opened = -1;
+                bool openedBracket=false;
+                bool parenthesized = true;
+                for (int i = 0; i < str.Count(); i++)
+                {
+                    if (str[i] == '(')
+                    {
+                        openedBracket = true;
+                    }
+                    else if (str[i] == ')' && openedBracket == true)
+                    {
+                        openedBracket = false;
+                    }
+
+                    else if (str[i] == ')' && openedBracket == false)
+                    {
+                        parenthesized = false;
+                        break;
+                    }
+                }
+
+                if (parenthesized)
+                {
+                    opened = -1;
+                }
+                    
             }
 
             for (int i = 0; i < str.Count(); i++)
@@ -436,13 +577,13 @@ namespace MA.Limits
 
                 if (str[i] == ')') opened--;
 
-                if (str[i] == '^' && opened == 0 && str[i - 1] != 'e')
+                if (str[i] == '^' && opened == 0 && str[i - 1] != 'e' && check(str,i)==false)
                 {
                     degree = (int)FindCoefficient(str.Substring(i + 1));
                     existNonFigure = true;
                 }
 
-                if (str[i] == 'x' && opened == 0)
+                if (str[i] == 'x' && opened == 0 && check(str,i)==false)
                 {
                     existNonFigure = true;
                 }
@@ -491,7 +632,7 @@ namespace MA.Limits
 
             if (db.ToString().Count() > 0)
             {
-                fig = double.Parse(db.ToString());
+                fig = double.Parse(db.ToString(), CultureInfo.InvariantCulture);
             }
 
             if (negative == true)
@@ -541,7 +682,18 @@ namespace MA.Limits
                     insideFunction = true;
                 }
 
-                if ((str[i] == '+' || str[i] == '-') && opened == 1 && insideFunction == false)
+                if ((i+2)<str.Count() && (str[i] =='+' || str[i] == '-'))
+                {
+                    for (int j = i+1; j < str.Count()-2; j++)
+                    {
+                        if (str[j] == ')' && str[j + 1] == '^')
+                        {
+                            insideFunction = true;
+                        }
+                    }
+                }
+
+                if ((str[i] == '+' || str[i] == '-') && opened == 1 && insideFunction == false && length>0)
                 {
                     ListOfSummands.AddLast(str.Substring(startPosition, length));
                     startPosition = i;
