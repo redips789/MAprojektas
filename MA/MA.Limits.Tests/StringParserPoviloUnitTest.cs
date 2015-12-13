@@ -87,5 +87,14 @@ namespace MA.Limits.Tests
             numerator[0].Multiplicands[0].Aparam.Should().Be(1);
             numerator[0].Multiplicands[0].Bparam.Should().Be(-1);
         }
+
+        [TestMethod]
+        public void StringParse7()
+        {
+            string numeratorStr = "5*x^2-4*x-1";
+            List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
+           // numerator[0].Coefficient.Should().Be(5);
+           // numerator[0].PolynomialDegree.Should().Be(2);
+        }
     }
 }
