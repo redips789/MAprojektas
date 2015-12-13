@@ -72,6 +72,7 @@
     <Compile Include="LimitCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PowerFunctionTests.cs" />
+    <Compile Include="StringParserVytautoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MA.Limits\MA.Limits.csproj">
