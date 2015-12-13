@@ -123,9 +123,10 @@ namespace MA.Limits.Tests
         {
             string numeratorStr = "(x-6)^(1/3)+2";
             List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
-            numerator[0].Coefficient.Should().Be(9);
-            numerator[0].PolynomialDegree.Should().Be(2);
-            numerator[1].Coefficient.Should().Be(-1);
+            numerator[0].Coefficient.Should().Be(1);
+            numerator[0].Multiplicands[0].Should().Match<PowerFunction>(x => x.PowerDenominator == 3 && x.PowerNumerator == 1 && x.Aparam == 1 && x.Bparam == -6);
+            numerator[1].Coefficient.Should().Be(2);
+            numerator[1].PolynomialDegree.Should().Be(0);
         }
     }
 }
