@@ -93,8 +93,39 @@ namespace MA.Limits.Tests
         {
             string numeratorStr = "5*x^2-4*x-1";
             List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
-           // numerator[0].Coefficient.Should().Be(5);
-           // numerator[0].PolynomialDegree.Should().Be(2);
+            numerator[0].Coefficient.Should().Be(5);
+            numerator[0].PolynomialDegree.Should().Be(2);
+            numerator[1].Coefficient.Should().Be(-4);
+            numerator[1].PolynomialDegree.Should().Be(1);
+            numerator[2].Coefficient.Should().Be(-1);
+        }
+        [TestMethod]
+        public void StringParse8()
+        {
+            string numeratorStr = "x^(1/2)";
+            List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
+            numerator[0].Coefficient.Should().Be(1);
+            numerator[0].Multiplicands[0].Should().Match<PowerFunction>(x => x.PowerDenominator==2 && x.PowerNumerator == 1);
+        }
+
+        [TestMethod]
+        public void StringParse9() //exception
+        {
+            string numeratorStr = "9*x^2 - 1";
+            List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
+            numerator[0].Coefficient.Should().Be(9);
+            numerator[0].PolynomialDegree.Should().Be(2);
+            numerator[1].Coefficient.Should().Be(-1);
+        }
+
+        [TestMethod]
+        public void StringParse10() //exception
+        {
+            string numeratorStr = "(x-6)^(1/3)+2";
+            List<Summand> numerator = StringToSummand.Parse(numeratorStr); //meta exception
+            numerator[0].Coefficient.Should().Be(9);
+            numerator[0].PolynomialDegree.Should().Be(2);
+            numerator[1].Coefficient.Should().Be(-1);
         }
     }
 }
