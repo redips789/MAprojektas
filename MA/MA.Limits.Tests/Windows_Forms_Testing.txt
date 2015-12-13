@@ -27,6 +27,16 @@ Klase-LimitCalculatorMKDTests
 11.) (lim x->0) (cos(x) * (e^(7x) - e^(2x))) / sin(x) = 5                       Pavyko
 12.) (lim x->1) sin(7Pi*x)/sin(2Pi*x) = -7/2                                    Netestuota
 
+Klase-LimitCalculatorTests
+1.) (lim x->0) (sin(x) - x) / (sin(x) * x) = 0                                 	Pavyko
+2.) (lim x->0) (((1 + x)^3) - ((1 + 3x)^1)) / (x + x^5) = 0			Pavyko
+3.) (lim x->0) (x^3 * sin(x)) * (x^3 + (x^2 * sin(x))^2 )^2 = 0			Pavyko
+4.) (lim x->2) 1 / x  = 0.5							Pavyko
+5.) (lim x->0) sin (x + 3) = sin(3) ~ 0.141120008059867				Pavyko
+6.) (lim x->0) 1/x = NOT EXISTS							Pavyko
+7.) (lim x->0) 1/-(x^2) = -INF							Pavyko 
+8.) (lim x->0) 1/sin(x) = NOT EXISTS						Pavyko
+9.) (lim x->0) (x^(1/5)) / (x^(1/3)) = +INF					Pavyko
 
 Pastaba:
 Tokios reiksmes, kaip: 1/3, 1/12, pi, pi/2, 2/pi buvo isistatomos kaip realus skaiciai su 16 simboliu po kableliu
