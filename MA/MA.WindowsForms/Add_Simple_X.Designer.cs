@@ -30,7 +30,6 @@
         {
             this.XCoefficient = new System.Windows.Forms.TextBox();
             this.Poli = new System.Windows.Forms.Label();
-            this.XDegree = new System.Windows.Forms.TextBox();
             this.AddX = new System.Windows.Forms.Button();
             this.ErrorBox = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -51,13 +50,6 @@
             this.Poli.Size = new System.Drawing.Size(27, 31);
             this.Poli.TabIndex = 10;
             this.Poli.Text = "x";
-            // 
-            // XDegree
-            // 
-            this.XDegree.Location = new System.Drawing.Point(38, 42);
-            this.XDegree.Name = "XDegree";
-            this.XDegree.Size = new System.Drawing.Size(30, 20);
-            this.XDegree.TabIndex = 9;
             // 
             // AddX
             // 
@@ -86,7 +78,6 @@
             this.Controls.Add(this.ErrorBox);
             this.Controls.Add(this.XCoefficient);
             this.Controls.Add(this.Poli);
-            this.Controls.Add(this.XDegree);
             this.Controls.Add(this.AddX);
             this.Name = "Add_Simple_X";
             this.Text = "Add_Simple_X";
@@ -100,7 +91,6 @@
 
         private System.Windows.Forms.TextBox XCoefficient;
         private System.Windows.Forms.Label Poli;
-        private System.Windows.Forms.TextBox XDegree;
         private System.Windows.Forms.Button AddX;
         private System.Windows.Forms.Label ErrorBox;
     }

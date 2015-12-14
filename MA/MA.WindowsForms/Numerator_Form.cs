@@ -28,6 +28,7 @@ namespace MA.WindowsForms
             SumTextBox.Text = "";
             Index = index;
             this.Text = formName;
+            Coefficient_Text.Text = "1.0";
         }
 
         private void Numerator_Load(object sender, EventArgs e)
@@ -37,11 +38,20 @@ namespace MA.WindowsForms
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            try
+            {
 
-            Limits.AddToNumeratorDe(All_Functions, Index);
-            Limits.AddToNuDeText(SumTextBox.Text, Index);
-            Limits.SetVisable(true);
-            this.Dispose();
+                SumTextBox.Text = Coefficient_Text.Text + (string.IsNullOrWhiteSpace(SumTextBox.Text) ? "" : "*") + SumTextBox.Text;
+                All_Functions.Coefficient = Convert.ToDouble(Coefficient_Text.Text);
+                Limits.AddToNumeratorDe(All_Functions, Index);
+                Limits.AddToNuDeText(SumTextBox.Text, Index);
+                Limits.SetVisable(true);
+                this.Dispose();
+            }
+            catch(Exception ex)
+            {
+                ErrorBox.Text = ex.Message;
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -54,9 +64,8 @@ namespace MA.WindowsForms
         
         }
 
-        public void Add_Simple_X_To_Summand(double coefficient, int polynomialDegree)
+        public void Add_Simple_X_To_Summand(int polynomialDegree)
         {
-            All_Functions.Coefficient = coefficient;
             All_Functions.PolynomialDegree = polynomialDegree;
             Add_X_From_Form.Enabled = false;
 

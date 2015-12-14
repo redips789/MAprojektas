@@ -12,7 +12,7 @@ namespace MA.WindowsForms
 {
     public interface Interface_Numerator
     {
-        void Add_Simple_X_To_Summand(double coefficient, int polynomialDegree);
+        void Add_Simple_X_To_Summand(int polynomialDegree);
         void Add_PowerFunction_To_Summand(double a, double b, int n, int m);
         void Add_SinCosLn_To_Summand(double a, double b, int index);
         void Add_Exponential_To_Summand(double a, double b);

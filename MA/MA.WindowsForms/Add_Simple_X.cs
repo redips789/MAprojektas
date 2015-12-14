@@ -33,12 +33,11 @@ namespace MA.WindowsForms
         {
             try
             {
-                double Coefficient = Convert.ToDouble(XDegree.Text);
                 int PolynomialDegree = Convert.ToInt32(XCoefficient.Text);
 
-                Num_F.Add_Simple_X_To_Summand(Coefficient, PolynomialDegree);
+                Num_F.Add_Simple_X_To_Summand(PolynomialDegree);
 
-                Num_F.AddToSumTextBox("( " + XDegree.Text + "x^" + XCoefficient.Text + " )");
+                Num_F.AddToSumTextBox("(x^" + XCoefficient.Text + " )");
                 Num_F.SetVisable(true);
                 this.Dispose();
             }

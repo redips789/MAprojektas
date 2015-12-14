@@ -19,14 +19,18 @@ namespace MA.WindowsForms
 
         private Numerator_Form Form_Denominator { get; set; }
 
-        private List<Summand> V_Numerator { get; set; }
 
-        private List<Summand> V_Denominator { get; set; }
+        private Stack<Summand> Stack_Numerator = new Stack<Summand>();
+
+        private Stack<Summand> Stack_Denominator = new Stack<Summand>();
+
+        private Stack<int> Stack_Numerator_Lenghts = new Stack<int>();
+
+        private Stack<int> Stack_Denominator_Lenghts = new Stack<int>();
+
         public Limit_calculator()
         {
             InitializeComponent();
-            V_Numerator = new List<Summand>();
-            V_Denominator = new List<Summand>();
             NuText.Enabled = false;
             DeText.Enabled = false;
             NuText.Text = "";
@@ -52,12 +56,17 @@ namespace MA.WindowsForms
 
         private void CountLimit_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(NuText.Text) || string.IsNullOrWhiteSpace(DeText.Text) || string.IsNullOrWhiteSpace(XgoTo.Text) )
+            {
+                ErrorBox.Text = "Fields can't be empty";
+                return;
+            }
             try
             {
                 var normalizedFunction = new NormalizedFunction
                 {
-                    Numerator = V_Numerator,
-                    Denominator = V_Denominator
+                    Numerator = Stack_Numerator.ToList(),
+                    Denominator = Stack_Denominator.ToList()
                 };
                 var result = LimitCalculator.CalculateLimit(normalizedFunction, Convert.ToDouble(XgoTo.Text));
                 if(result.LimitResultType == LimitResultType.RealNumber)
@@ -69,11 +78,18 @@ namespace MA.WindowsForms
                 if (result.LimitResultType == LimitResultType.NegativeInfinity)
                     Limit_Answer.Text = "Negative infinity";
 
-                CountLimit.Enabled = false;
+            }
+            catch(LimitDoesNotExistException)
+            {
+                Limit_Answer.Text = "Not exist";
             }
             catch(Exception ex)
             {
                 ErrorBox.Text = ex.Message;
+            }
+            finally
+            {
+                CountLimit.Enabled = false;
             }
 
         }
@@ -91,30 +107,37 @@ namespace MA.WindowsForms
         {
             if(index)
             {
-                V_Numerator.Add(summ);
+                Stack_Numerator.Push(summ);
             }
             else
             {
-                V_Denominator.Add(summ);
+                Stack_Denominator.Push(summ);
             }
         }
 
         public void AddToNuDeText(string message, bool Index)
         {
+            int n = 0;
             if (Index)
             {
                 if (NuText.Text != "")
                 {
                     NuText.Text += "+";
+                    n = 1;
                 }
+                n += message.Length;
+                Stack_Numerator_Lenghts.Push(n);
                 NuText.Text += message;
             }
             else
             {
                 if (DeText.Text != "")
                 {
+                    n = 1;
                     DeText.Text += "+";
                 }
+                n += message.Length;
+                Stack_Denominator_Lenghts.Push(n);
                 DeText.Text += message;
             }
         }
@@ -129,13 +152,16 @@ namespace MA.WindowsForms
 
         private void Reset_Button_Click(object sender, EventArgs e)
         {
-            Limit_Answer.Text = "Limit";
+            Limit_Answer.Text = "Result";
             NuText.Text = "";
             DeText.Text = "";
-            V_Numerator = new List<Summand>();
-            V_Denominator = new List<Summand>();
+            Stack_Numerator = new Stack<Summand>();
+            Stack_Denominator = new Stack<Summand>();
+            Stack_Numerator_Lenghts = new Stack<int>();
+            Stack_Denominator_Lenghts = new Stack<int>();
             XgoTo.Text = "";
             CountLimit.Enabled = true;
+            ErrorBox.Text = "Errors: 0";
         }
 
         private void Limit_Answer_Click(object sender, EventArgs e)
@@ -146,6 +172,34 @@ namespace MA.WindowsForms
         public void SetVisable(bool value)
         {
             this.Visible = value;
+        }
+
+        private void Remove_From_Numerator_Click(object sender, EventArgs e)
+        {
+            if (Stack_Numerator.Count!=0)
+            {
+                Stack_Numerator.Pop();
+                int n = Stack_Numerator_Lenghts.Pop();
+                NuText.Text = NuText.Text.Substring(0, NuText.Text.Length - n);
+            }
+            else
+            {
+                ErrorBox.Text = "Element in numerator does not exist";
+            }
+        }
+
+        private void Remove_From_Denominator_Click(object sender, EventArgs e)
+        {
+            if (Stack_Denominator.Count != 0)
+            {
+                Stack_Denominator.Pop();
+                int n = Stack_Denominator_Lenghts.Pop();
+                DeText.Text = DeText.Text.Substring(0, DeText.Text.Length - n);
+            }
+            else
+            {
+                ErrorBox.Text = "Element in denominator does not exist";
+            }
         }
     }
 }
