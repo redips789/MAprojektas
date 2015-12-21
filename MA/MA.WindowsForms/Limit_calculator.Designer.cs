@@ -41,13 +41,15 @@
             this.Reset_Button = new System.Windows.Forms.Button();
             this.Remove_From_Numerator = new System.Windows.Forms.Button();
             this.Remove_From_Denominator = new System.Windows.Forms.Button();
+            this.taylorDegree = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lim_label
             // 
             this.lim_label.AutoSize = true;
             this.lim_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lim_label.Location = new System.Drawing.Point(13, 119);
+            this.lim_label.Location = new System.Drawing.Point(13, 39);
             this.lim_label.Name = "lim_label";
             this.lim_label.Size = new System.Drawing.Size(71, 46);
             this.lim_label.TabIndex = 0;
@@ -58,7 +60,7 @@
             // 
             this.x_goes_to_dont_touch.AutoSize = true;
             this.x_goes_to_dont_touch.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.x_goes_to_dont_touch.Location = new System.Drawing.Point(16, 168);
+            this.x_goes_to_dont_touch.Location = new System.Drawing.Point(16, 88);
             this.x_goes_to_dont_touch.Name = "x_goes_to_dont_touch";
             this.x_goes_to_dont_touch.Size = new System.Drawing.Size(41, 25);
             this.x_goes_to_dont_touch.TabIndex = 1;
@@ -67,28 +69,28 @@
             // 
             // NuText
             // 
-            this.NuText.Location = new System.Drawing.Point(103, 119);
+            this.NuText.Location = new System.Drawing.Point(103, 39);
             this.NuText.Name = "NuText";
             this.NuText.Size = new System.Drawing.Size(549, 20);
             this.NuText.TabIndex = 2;
             // 
             // DeText
             // 
-            this.DeText.Location = new System.Drawing.Point(103, 145);
+            this.DeText.Location = new System.Drawing.Point(103, 65);
             this.DeText.Name = "DeText";
             this.DeText.Size = new System.Drawing.Size(549, 20);
             this.DeText.TabIndex = 3;
             // 
             // XgoTo
             // 
-            this.XgoTo.Location = new System.Drawing.Point(63, 168);
+            this.XgoTo.Location = new System.Drawing.Point(63, 88);
             this.XgoTo.Name = "XgoTo";
             this.XgoTo.Size = new System.Drawing.Size(34, 20);
             this.XgoTo.TabIndex = 4;
             // 
             // AddToNu
             // 
-            this.AddToNu.Location = new System.Drawing.Point(658, 116);
+            this.AddToNu.Location = new System.Drawing.Point(658, 36);
             this.AddToNu.Name = "AddToNu";
             this.AddToNu.Size = new System.Drawing.Size(113, 23);
             this.AddToNu.TabIndex = 5;
@@ -98,7 +100,7 @@
             // 
             // AddToDe
             // 
-            this.AddToDe.Location = new System.Drawing.Point(658, 145);
+            this.AddToDe.Location = new System.Drawing.Point(658, 65);
             this.AddToDe.Name = "AddToDe";
             this.AddToDe.Size = new System.Drawing.Size(113, 23);
             this.AddToDe.TabIndex = 6;
@@ -108,7 +110,7 @@
             // 
             // CountLimit
             // 
-            this.CountLimit.Location = new System.Drawing.Point(620, 174);
+            this.CountLimit.Location = new System.Drawing.Point(702, 94);
             this.CountLimit.Name = "CountLimit";
             this.CountLimit.Size = new System.Drawing.Size(151, 74);
             this.CountLimit.TabIndex = 7;
@@ -119,7 +121,7 @@
             // ErrorBox
             // 
             this.ErrorBox.AutoSize = true;
-            this.ErrorBox.Location = new System.Drawing.Point(21, 280);
+            this.ErrorBox.Location = new System.Drawing.Point(21, 184);
             this.ErrorBox.Name = "ErrorBox";
             this.ErrorBox.Size = new System.Drawing.Size(46, 13);
             this.ErrorBox.TabIndex = 8;
@@ -130,7 +132,7 @@
             this.Limit_Answer.AutoSize = true;
             this.Limit_Answer.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Limit_Answer.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Limit_Answer.Location = new System.Drawing.Point(97, 217);
+            this.Limit_Answer.Location = new System.Drawing.Point(103, 96);
             this.Limit_Answer.Name = "Limit_Answer";
             this.Limit_Answer.Size = new System.Drawing.Size(92, 31);
             this.Limit_Answer.TabIndex = 9;
@@ -139,7 +141,7 @@
             // 
             // Reset_Button
             // 
-            this.Reset_Button.Location = new System.Drawing.Point(620, 255);
+            this.Reset_Button.Location = new System.Drawing.Point(701, 174);
             this.Reset_Button.Name = "Reset_Button";
             this.Reset_Button.Size = new System.Drawing.Size(151, 23);
             this.Reset_Button.TabIndex = 10;
@@ -149,7 +151,7 @@
             // 
             // Remove_From_Numerator
             // 
-            this.Remove_From_Numerator.Location = new System.Drawing.Point(777, 116);
+            this.Remove_From_Numerator.Location = new System.Drawing.Point(777, 36);
             this.Remove_From_Numerator.Name = "Remove_From_Numerator";
             this.Remove_From_Numerator.Size = new System.Drawing.Size(75, 23);
             this.Remove_From_Numerator.TabIndex = 11;
@@ -159,7 +161,7 @@
             // 
             // Remove_From_Denominator
             // 
-            this.Remove_From_Denominator.Location = new System.Drawing.Point(778, 145);
+            this.Remove_From_Denominator.Location = new System.Drawing.Point(778, 65);
             this.Remove_From_Denominator.Name = "Remove_From_Denominator";
             this.Remove_From_Denominator.Size = new System.Drawing.Size(75, 23);
             this.Remove_From_Denominator.TabIndex = 12;
@@ -167,11 +169,30 @@
             this.Remove_From_Denominator.UseVisualStyleBackColor = true;
             this.Remove_From_Denominator.Click += new System.EventHandler(this.Remove_From_Denominator_Click);
             // 
+            // taylorDegree
+            // 
+            this.taylorDegree.Location = new System.Drawing.Point(24, 155);
+            this.taylorDegree.Name = "taylorDegree";
+            this.taylorDegree.Size = new System.Drawing.Size(43, 20);
+            this.taylorDegree.TabIndex = 13;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(16, 127);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(133, 25);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Taylor degree";
+            // 
             // Limit_calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 305);
+            this.ClientSize = new System.Drawing.Size(953, 207);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.taylorDegree);
             this.Controls.Add(this.Remove_From_Denominator);
             this.Controls.Add(this.Remove_From_Numerator);
             this.Controls.Add(this.Reset_Button);
@@ -208,6 +229,8 @@
         private System.Windows.Forms.Button Reset_Button;
         private System.Windows.Forms.Button Remove_From_Numerator;
         private System.Windows.Forms.Button Remove_From_Denominator;
+        private System.Windows.Forms.TextBox taylorDegree;
+        private System.Windows.Forms.Label label1;
     }
 }
 
