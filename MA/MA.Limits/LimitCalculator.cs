@@ -26,9 +26,25 @@ namespace MA.Limits
             var expandedNumerator = PlugTaylorSeriesInSummands(raisedNumerator, maxTaylorDegree);
             var expandedDenominator = PlugTaylorSeriesInSummands(raisedDenominator, maxTaylorDegree);
 
-            var numeratorMinPolynomialWithoutO = expandedNumerator.First(s => s.LittleODegree == 0);
-            var denominatorMinPolynomialWithoutO = expandedDenominator.First(s => s.LittleODegree == 0);
+            var numeratorMinPolynomialWithoutO = expandedNumerator.FirstOrDefault(s => s.LittleODegree == 0);
+            var denominatorMinPolynomialWithoutO = expandedDenominator.FirstOrDefault(s => s.LittleODegree == 0);
 
+            if (denominatorMinPolynomialWithoutO == null)
+            {
+                return new LimitResult
+                {
+                    LimitResultType = LimitResultType.DoesNotExist,
+                }; 
+            }
+
+            if (numeratorMinPolynomialWithoutO == null)
+            {
+                return new LimitResult
+                {
+                    LimitResultType = LimitResultType.RealNumber,
+                    Value = 0
+                };
+            }
 
             var degreeNumerator = numeratorMinPolynomialWithoutO.PolynomialDegree *
                       denominatorMinPolynomialWithoutO.PolynomialDegreeDenominator

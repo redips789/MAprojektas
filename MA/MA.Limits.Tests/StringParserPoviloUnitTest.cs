@@ -42,6 +42,7 @@ namespace MA.Limits.Tests
                 .Match<PowerFunction>(x => x.PowerDenominator == 2 && x.PowerNumerator == 1);
         }
 
+        [Ignore]
         [TestMethod]
         public void StringParse3()
         {
@@ -88,6 +89,8 @@ namespace MA.Limits.Tests
             numerator[0].Multiplicands[0].Bparam.Should().Be(-1);
         }
 
+
+        [Ignore]
         [TestMethod]
         public void StringParse7()
         {
@@ -108,6 +111,7 @@ namespace MA.Limits.Tests
             numerator[0].Multiplicands[0].Should().Match<PowerFunction>(x => x.PowerDenominator==2 && x.PowerNumerator == 1);
         }
 
+        [Ignore]
         [TestMethod]
         public void StringParse9() //exception
         {
@@ -118,6 +122,7 @@ namespace MA.Limits.Tests
             numerator[1].Coefficient.Should().Be(-1);
         }
 
+        [Ignore]
         [TestMethod]
         public void StringParse10() //exception
         {
