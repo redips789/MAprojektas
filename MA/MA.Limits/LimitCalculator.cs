@@ -269,7 +269,7 @@ namespace MA.Limits
                 var expanded = PlugTaylorSeriesInSummands(summands, deg);
                 if (expanded
                     .Where(x => x.LittleODegree == 0)
-                    .Any(x => x.PolynomialDegree/ (double) x.PolynomialDegreeDenominator <= minPolynomialDegree + deg))
+                    .Any(x => x.PolynomialDegree/ (double) x.PolynomialDegreeDenominator + 1e-10 <= minPolynomialDegree + deg))
                 {
                     return expanded;
                 }

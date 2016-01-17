@@ -405,6 +405,45 @@ namespace MA.Limits.Tests
             result.LimitResultType.Should().Be(LimitResultType.PositiveInfinity);
         }
 
+        [TestMethod]
+        // (lim x->0) (ln(3*x + 5) - ln(5)) / x = 3/5
+        public void CalculateLimit_AndReturnsCorrectLimit_10()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new LogarithmicFunction() {Aparam = 3, Bparam = 5}
+                    }
+                },
+                new Summand
+                {
+                    Coefficient = -Math.Log(5)
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 1
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(0.6);
+        }
+
 
     }
 }
