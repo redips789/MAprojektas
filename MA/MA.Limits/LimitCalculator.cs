@@ -100,7 +100,7 @@ namespace MA.Limits
 
         }
 
-        public static IEnumerable<Summand> TransformArgumentToZero(IEnumerable<Summand> summands, double argument)
+        private static IEnumerable<Summand> TransformArgumentToZero(IEnumerable<Summand> summands, double argument)
         {
             var summandsList = summands.ToList();
 
@@ -124,7 +124,7 @@ namespace MA.Limits
             return returned;
         }
 
-        public static IEnumerable<Summand> RaiseSumsToPower(Summand summand)
+        private static IEnumerable<Summand> RaiseSumsToPower(Summand summand)
         {
             var returned = new List<Summand> { summand };
 
@@ -149,7 +149,7 @@ namespace MA.Limits
 
         }
 
-        public static IEnumerable<Summand> DistributeIncludingElementaryFunctions(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
+        private static IEnumerable<Summand> DistributeIncludingElementaryFunctions(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
         {
             var distribution =
                 factor1.SelectMany(
@@ -165,7 +165,7 @@ namespace MA.Limits
             return distribution;
         }
 
-        public static IEnumerable<Summand> PlugTaylorSeriesInSummands(IEnumerable<Summand> summands, int maxTaylorDegree)
+        private static IEnumerable<Summand> PlugTaylorSeriesInSummands(IEnumerable<Summand> summands, int maxTaylorDegree)
         {
             var expanded = summands.SelectMany(s => ReplaceSummandWithExpansion(s, maxTaylorDegree));
             var simplified = Simplify(expanded);
@@ -173,7 +173,7 @@ namespace MA.Limits
             return simplified;
         }
 
-        public static IEnumerable<Summand> ReplaceSummandWithExpansion(Summand summand, int maxTaylorDegree)
+        private static IEnumerable<Summand> ReplaceSummandWithExpansion(Summand summand, int maxTaylorDegree)
         {
             if (MathHelper.IsZero(summand.Coefficient))
             {
@@ -207,7 +207,7 @@ namespace MA.Limits
             return multiplied.OrderBy(s => s.LittleODegree).ThenBy(s => s.PolynomialDegree / (double)s.PolynomialDegreeDenominator);
         }
 
-        public static IEnumerable<Summand> Distribute(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
+        private static IEnumerable<Summand> Distribute(IEnumerable<Summand> factor1, IEnumerable<Summand> factor2)
         {
             var distribution =
                 factor1.SelectMany(
@@ -219,7 +219,7 @@ namespace MA.Limits
             return simplified;
         }
 
-        public static Summand SimpleSummandProduct(Summand s1, Summand s2)
+        private static Summand SimpleSummandProduct(Summand s1, Summand s2)
         {
             var denominator = s1.PolynomialDegreeDenominator * s2.PolynomialDegreeDenominator;
             var numerator = s1.PolynomialDegree * s2.PolynomialDegreeDenominator +
@@ -234,7 +234,7 @@ namespace MA.Limits
             };
         }
 
-        public static IEnumerable<Summand> Simplify(IEnumerable<Summand> series)
+        private static IEnumerable<Summand> Simplify(IEnumerable<Summand> series)
         {
             var grouped =
                 series.GroupBy(
@@ -258,7 +258,7 @@ namespace MA.Limits
             return simplified;
         }
 
-        public static IEnumerable<Summand> PerformTaylorExpansion(IEnumerable<Summand> summands)
+        private static IEnumerable<Summand> PerformTaylorExpansion(IEnumerable<Summand> summands)
         {
             int minPolynomialDegree = summands.Min(x => x.PolynomialDegree);
 
