@@ -7,12 +7,8 @@ namespace MA.Limits
 {
     public static class LimitCalculator
     {
-        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, double argument)
-        {
-            return CalculateLimit(normalizedFunction, argument, 7);
-        }
 
-        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, double argument, int maxTaylorDegree)
+        public static LimitResult CalculateLimit(NormalizedFunction normalizedFunction, double argument)
         {
             var raisedNumerator = normalizedFunction.Numerator.SelectMany(RaiseSumsToPower);
             var raisedDenominator = normalizedFunction.Denominator.SelectMany(RaiseSumsToPower);
@@ -23,8 +19,8 @@ namespace MA.Limits
                 raisedDenominator = TransformArgumentToZero(raisedDenominator, argument);
             }
 
-            var expandedNumerator = PlugTaylorSeriesInSummands(raisedNumerator, maxTaylorDegree);
-            var expandedDenominator = PlugTaylorSeriesInSummands(raisedDenominator, maxTaylorDegree);
+            var expandedNumerator = PerformTaylorExpansion(raisedNumerator);
+            var expandedDenominator = PerformTaylorExpansion(raisedDenominator);
 
             var numeratorMinPolynomialWithoutO = expandedNumerator.FirstOrDefault(s => s.LittleODegree == 0);
             var denominatorMinPolynomialWithoutO = expandedDenominator.FirstOrDefault(s => s.LittleODegree == 0);
@@ -260,6 +256,28 @@ namespace MA.Limits
                 grouped.Where(s => !MathHelper.IsZero(s.Coefficient));
 
             return simplified;
+        }
+
+        public static IEnumerable<Summand> PerformTaylorExpansion(IEnumerable<Summand> summands)
+        {
+            int minPolynomialDegree = summands.Min(x => x.PolynomialDegree);
+
+            var taylorDegrees = Enumerable.Range(2, 24).Concat(new[] {50, 100}).ToList();
+
+            foreach (var deg in taylorDegrees)
+            {
+                var expanded = PlugTaylorSeriesInSummands(summands, deg);
+                if (expanded
+                    .Where(x => x.LittleODegree == 0)
+                    .Any(x => x.PolynomialDegree/ (double) x.PolynomialDegreeDenominator <= minPolynomialDegree + deg))
+                {
+                    return expanded;
+                }
+            }
+
+
+
+            return Enumerable.Empty<Summand>();
         }
 
     }

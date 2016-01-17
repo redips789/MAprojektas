@@ -130,7 +130,7 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction, 4, 3);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 4);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(2);
@@ -678,6 +678,59 @@ namespace MA.Limits.Tests
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(-3.5);
+        }
+
+        //--------------------------------------------------------------------------------------------------------
+        //NEW TASK
+        //--------------------------------------------------------------------------------------------------------
+        [TestMethod]
+        // (lim x->1) (x^101 - 101*x + 100)/ (x^2 - 2*x + 1) = 5050
+        public void CalculateLimit_MKD_74_1()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 101
+                },
+                new Summand
+                {
+                    Coefficient = -101,
+                    PolynomialDegree = 1
+                },
+                new Summand
+                {
+                    Coefficient = 100
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 2
+                },
+                new Summand
+                {
+                    Coefficient = -2,
+                    PolynomialDegree = 1
+                },
+                new Summand
+                {
+                    Coefficient = 1
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 1);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(5050);
         }
 
     }

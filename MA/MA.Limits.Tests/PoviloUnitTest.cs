@@ -50,7 +50,7 @@ namespace MA.Limits.Tests
                 Denominator = denominator
             };
 
-            var result = LimitCalculator.CalculateLimit(normalizedFunction, 1, 10);
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 1);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
             result.Value.Should().Be(4);

@@ -74,7 +74,7 @@ namespace MA.WindowsForms
                     Numerator = Stack_Numerator.ToList(),
                     Denominator = Stack_Denominator.ToList()
                 };
-                var result = LimitCalculator.CalculateLimit(normalizedFunction, Convert.ToDouble(XgoTo.Text),Convert.ToInt32(taylorDegree.Text));
+                var result = LimitCalculator.CalculateLimit(normalizedFunction, Convert.ToDouble(XgoTo.Text));
                 if(result.LimitResultType == LimitResultType.RealNumber)
                      Limit_Answer.Text = Convert.ToString(result.Value);
                 if (result.LimitResultType == LimitResultType.DoesNotExist)
