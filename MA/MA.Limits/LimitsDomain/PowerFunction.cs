@@ -15,17 +15,17 @@ namespace MA.Limits.LimitsDomain
         public IEnumerable<Summand> ToTaylorExpansion(int n)
         {
             var gcd = MathHelper.GreatestCommonDivisor(PowerNumerator, PowerDenominator);
-            PowerNumerator /= gcd;
-            PowerDenominator /= gcd;
+            var powerNumerator = PowerNumerator /= gcd;
+            var powerDenominator = PowerDenominator /= gcd;
 
-            if (PowerDenominator == 1)
+            if (powerDenominator == 1)
             {
-                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, PowerNumerator);
+                return DomainHelper.RaiseLineToPowerWithBinomialExpansion(Aparam, Bparam, powerNumerator);
             }
 
             if (MathHelper.IsZero(Bparam))
             {
-                var aPowered = MathHelper.Power(Aparam, PowerNumerator, PowerDenominator);
+                var aPowered = MathHelper.Power(Aparam, powerNumerator, powerDenominator);
 
                 if (double.IsNaN(aPowered))
                 {
@@ -37,14 +37,14 @@ namespace MA.Limits.LimitsDomain
                     new Summand
                     {
                         Coefficient = aPowered,
-                        PolynomialDegree = PowerNumerator,
-                        PolynomialDegreeDenominator = PowerDenominator
+                        PolynomialDegree = powerNumerator,
+                        PolynomialDegreeDenominator = powerDenominator
                     }
                 };
             }
 
 
-            var bPowered = MathHelper.Power(Bparam, PowerNumerator, PowerDenominator);
+            var bPowered = MathHelper.Power(Bparam, powerNumerator, powerDenominator);
 
             if (double.IsNaN(bPowered))
             {
@@ -62,7 +62,7 @@ namespace MA.Limits.LimitsDomain
                                   new Summand
                                   {
                                     PolynomialDegree = i,
-                                    Coefficient = bPowered * Product(i, PowerNumerator / (double)PowerDenominator) * MathHelper.FastPow(Aparam / Bparam, i) / MathHelper.Factorial(i)
+                                    Coefficient = bPowered * Product(i, powerNumerator / (double)powerDenominator) * MathHelper.FastPow(Aparam / Bparam, i) / MathHelper.Factorial(i)
                                   })
                               .Concat(new[] { new Summand { LittleODegree = n, Coefficient = 1.0 } });
 

@@ -733,5 +733,110 @@ namespace MA.Limits.Tests
             result.Value.Should().Be(5050);
         }
 
+        [TestMethod]
+        // (lim x->1) (x^4 - x^3 + x^2 - 3x + 3) / (x^3 - x^2 - x + 1) = +INF
+        public void CalculateLimit_MKD_74_2()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 4
+                },
+                new Summand
+                {
+                    Coefficient = -1,
+                    PolynomialDegree = 3
+                },
+                new Summand
+                {
+                    PolynomialDegree = 2
+                },
+                new Summand
+                {
+                    Coefficient = -3,
+                    PolynomialDegree = 1
+                },
+                new Summand
+                {
+                    Coefficient = 3,
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 3
+                },
+                new Summand
+                {
+                    Coefficient = -1,
+                    PolynomialDegree = 2
+                },
+                new Summand
+                {
+                    Coefficient = -1,
+                    PolynomialDegree = 1
+                },
+                new Summand
+                {
+                    Coefficient = 1
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 1);
+
+            result.LimitResultType.Should().Be(LimitResultType.PositiveInfinity);
+        }
+
+        [TestMethod]
+        // (lim x->0) ((32+x)^(1/5) - 2) / x = 1/80
+        public void CalculateLimit_MKD_74_5()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new PowerFunction
+                        {
+                            Aparam = 1, Bparam = 32, PowerNumerator = 1, PowerDenominator = 5
+                        }
+                    }
+                },
+                new Summand
+                {
+                    Coefficient = -2
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 1
+                }
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(1.0/80);
+        }
+
     }
 }

@@ -454,6 +454,48 @@ namespace MA.Limits.Tests
             result.Value.Should().Be(27.0/125/3);
         }
 
+        [TestMethod]
+        // (lim x->0) (x*sin(x) - x*sin(x)) / 1 = 0
+        public void CalculateLimit_AndReturnsCorrectLimit_11()
+        {
+            var numerator = new List<Summand>
+            {
+                new Summand
+                {
+                    PolynomialDegree = 1,
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new Sine { Aparam = 1 }
+                    }
+                },
+                new Summand
+                {
+                    Coefficient = -1,
+                    PolynomialDegree = 1,
+                    Multiplicands = new List<IElementaryFunction>
+                    {
+                        new Sine { Aparam = 1 }
+                    }
+                }
+            };
+
+            var denominator = new List<Summand>
+            {
+                new Summand()
+            };
+
+            var normalizedFunction = new NormalizedFunction
+            {
+                Numerator = numerator,
+                Denominator = denominator
+            };
+
+            var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
+
+            result.LimitResultType.Should().Be(LimitResultType.RealNumber);
+            result.Value.Should().Be(0);
+        }
+
 
     }
 }

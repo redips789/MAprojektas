@@ -78,7 +78,7 @@ namespace MA.Limits.Helpers
 
             var result = Math.Pow(Math.Abs(a), power);
 
-            if (powerNumerator % 2 == 1 && powerDenominator % 2 == 1)
+            if (a < 0 && powerNumerator % 2 == 1 && powerDenominator % 2 == 1)
             {
                 result *= -1;
             }
