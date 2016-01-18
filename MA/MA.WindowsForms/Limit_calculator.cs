@@ -37,7 +37,6 @@ namespace MA.WindowsForms
             DeText.Text = "";
             XgoTo.Text = "";
             this.Text = "Limit calculator";
-            taylorDegree.Text = "7";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -57,18 +56,13 @@ namespace MA.WindowsForms
 
         private void CountLimit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NuText.Text) || string.IsNullOrWhiteSpace(DeText.Text) || string.IsNullOrWhiteSpace(XgoTo.Text) || string.IsNullOrWhiteSpace(taylorDegree.Text))
+            if (string.IsNullOrWhiteSpace(NuText.Text) || string.IsNullOrWhiteSpace(DeText.Text) || string.IsNullOrWhiteSpace(XgoTo.Text))
             {
                 ErrorBox.Text = "Fields can't be empty";
                 return;
             }
             try
             {
-                if(Convert.ToInt32(taylorDegree.Text)<0)
-                {
-                    ErrorBox.Text = "Taylor degree must be positive number";
-                    return;
-                }
                 var normalizedFunction = new NormalizedFunction
                 {
                     Numerator = Stack_Numerator.ToList(),
@@ -159,7 +153,6 @@ namespace MA.WindowsForms
         private void Reset_Button_Click(object sender, EventArgs e)
         {
             Limit_Answer.Text = "Result";
-            taylorDegree.Text = "7";
             NuText.Text = "";
             DeText.Text = "";
             Stack_Numerator = new Stack<Summand>();
@@ -207,6 +200,11 @@ namespace MA.WindowsForms
             {
                 ErrorBox.Text = "Element in denominator does not exist";
             }
+        }
+
+        private void ErrorBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

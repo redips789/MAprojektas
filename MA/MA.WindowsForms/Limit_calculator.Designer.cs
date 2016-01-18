@@ -41,8 +41,6 @@
             this.Reset_Button = new System.Windows.Forms.Button();
             this.Remove_From_Numerator = new System.Windows.Forms.Button();
             this.Remove_From_Denominator = new System.Windows.Forms.Button();
-            this.taylorDegree = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lim_label
@@ -112,7 +110,7 @@
             // 
             this.CountLimit.Location = new System.Drawing.Point(702, 94);
             this.CountLimit.Name = "CountLimit";
-            this.CountLimit.Size = new System.Drawing.Size(151, 74);
+            this.CountLimit.Size = new System.Drawing.Size(151, 33);
             this.CountLimit.TabIndex = 7;
             this.CountLimit.Text = "Count Limit";
             this.CountLimit.UseVisualStyleBackColor = true;
@@ -121,11 +119,12 @@
             // ErrorBox
             // 
             this.ErrorBox.AutoSize = true;
-            this.ErrorBox.Location = new System.Drawing.Point(21, 184);
+            this.ErrorBox.Location = new System.Drawing.Point(18, 143);
             this.ErrorBox.Name = "ErrorBox";
             this.ErrorBox.Size = new System.Drawing.Size(46, 13);
             this.ErrorBox.TabIndex = 8;
             this.ErrorBox.Text = "Errors: 0";
+            this.ErrorBox.Click += new System.EventHandler(this.ErrorBox_Click);
             // 
             // Limit_Answer
             // 
@@ -141,7 +140,7 @@
             // 
             // Reset_Button
             // 
-            this.Reset_Button.Location = new System.Drawing.Point(701, 174);
+            this.Reset_Button.Location = new System.Drawing.Point(701, 133);
             this.Reset_Button.Name = "Reset_Button";
             this.Reset_Button.Size = new System.Drawing.Size(151, 23);
             this.Reset_Button.TabIndex = 10;
@@ -169,30 +168,11 @@
             this.Remove_From_Denominator.UseVisualStyleBackColor = true;
             this.Remove_From_Denominator.Click += new System.EventHandler(this.Remove_From_Denominator_Click);
             // 
-            // taylorDegree
-            // 
-            this.taylorDegree.Location = new System.Drawing.Point(24, 155);
-            this.taylorDegree.Name = "taylorDegree";
-            this.taylorDegree.Size = new System.Drawing.Size(43, 20);
-            this.taylorDegree.TabIndex = 13;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(16, 127);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 25);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Taylor degree";
-            // 
             // Limit_calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 207);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.taylorDegree);
+            this.ClientSize = new System.Drawing.Size(953, 171);
             this.Controls.Add(this.Remove_From_Denominator);
             this.Controls.Add(this.Remove_From_Numerator);
             this.Controls.Add(this.Reset_Button);
@@ -229,8 +209,6 @@
         private System.Windows.Forms.Button Reset_Button;
         private System.Windows.Forms.Button Remove_From_Numerator;
         private System.Windows.Forms.Button Remove_From_Denominator;
-        private System.Windows.Forms.TextBox taylorDegree;
-        private System.Windows.Forms.Label label1;
     }
 }
 
