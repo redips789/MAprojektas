@@ -406,7 +406,7 @@ namespace MA.Limits.Tests
         }
 
         [TestMethod]
-        // (lim x->0) (ln(3*x + 5) - ln(5)) / x = 3/5
+        // (lim x->0) (ln(3*x + 5) - ln(5) - 3/5/1*x + 9/25/2*(x^2)) / (x^3) = 27/125/3
         public void CalculateLimit_AndReturnsCorrectLimit_10()
         {
             var numerator = new List<Summand>
@@ -415,12 +415,22 @@ namespace MA.Limits.Tests
                 {
                     Multiplicands = new List<IElementaryFunction>
                     {
-                        new LogarithmicFunction() {Aparam = 3, Bparam = 5}
+                        new LogarithmicFunction {Aparam = 3, Bparam = 5}
                     }
                 },
                 new Summand
                 {
                     Coefficient = -Math.Log(5)
+                },
+                new Summand
+                {
+                    Coefficient = -3.0/5,
+                    PolynomialDegree = 1
+                },
+                new Summand
+                {
+                    Coefficient = 9.0/25/2,
+                    PolynomialDegree = 2
                 }
             };
 
@@ -428,7 +438,7 @@ namespace MA.Limits.Tests
             {
                 new Summand
                 {
-                    PolynomialDegree = 1
+                    PolynomialDegree = 3
                 }
             };
 
@@ -441,7 +451,7 @@ namespace MA.Limits.Tests
             var result = LimitCalculator.CalculateLimit(normalizedFunction, 0);
 
             result.LimitResultType.Should().Be(LimitResultType.RealNumber);
-            result.Value.Should().Be(0.6);
+            result.Value.Should().Be(27.0/125/3);
         }
 
 
